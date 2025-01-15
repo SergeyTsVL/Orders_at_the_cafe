@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<h2>Добавление товара к заказу</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Добавить товар</button>
+</form>
