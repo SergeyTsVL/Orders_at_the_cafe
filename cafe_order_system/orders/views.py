@@ -1,7 +1,39 @@
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Order, Item
+from .models import Order, Item, OrderItem
 from .forms import OrderForm, StatusChangeForm, AddItemForm
+
+from django.shortcuts import render, redirect
+from .forms import SignUpForm
+from django.contrib.auth import login, authenticate, logout
+
+def logout_view(request):
+    """
+    Этот метод выполняет выход пользователя из системы и перенаправляет его на домашнюю страницу.
+    """
+    logout(request)
+    return redirect('home')
+
+def signup(request):
+    """
+    Вызывает страницу для подписи объявлений.
+    """
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('/home')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
+
+def home(request):
+    """
+    Вызывает страницу home.html.
+    """
+    return render(request, 'home.html')
 
 @login_required
 def create_order(request):

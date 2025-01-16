@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block content %}
 <h2>Изменение статуса заказа</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Изменить статус</button>
 </form>
+{% endblock %}

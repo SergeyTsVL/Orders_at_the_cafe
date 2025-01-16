@@ -3,12 +3,12 @@
 # Запускае команду для установки виртуального окружения
 pip install -r requirements.txt
 # Входим в директорию urban_project
-cd urban_project
+cd cafe_order_system
 # Производим миграции
-python manage.py makemigrations
-python manage.py migrate
+python cafe_order_system/manage.py makemigrations
+python cafe_order_system/manage.py migrate
 # Запускаем DjangoProject
-python manage.py runserver
+python cafe_order_system/manage.py runserver
 python manage.py createsuperuser
 
 # Так выглядит начальная страница проекта
