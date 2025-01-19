@@ -6,7 +6,7 @@ pip install -r requirements.txt
 cd cafe_order_system
 # Производим миграции
 python cafe_order_system/manage.py makemigrations
-python cafe_order_system/manage.py migrate
+python cafe_order_system/manage.py migrate orders zero
 # Запускаем DjangoProject
 python cafe_order_system/manage.py runserver
 python manage.py createsuperuser

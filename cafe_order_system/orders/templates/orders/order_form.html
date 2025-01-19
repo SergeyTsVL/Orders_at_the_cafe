@@ -4,8 +4,10 @@
 {% block content %}
 <h2>Создание заказа</h2>
 <form method="post">
+    {{ form.items.label }}: {{ form.items.name }}
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Создать заказ</button>
+
 </form>
 {% endblock %}

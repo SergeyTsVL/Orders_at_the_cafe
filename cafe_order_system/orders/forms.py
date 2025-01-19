@@ -2,30 +2,14 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Order, Item, OrderItem
+from .models import Order
 
 
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['table_number', 'items']
+        fields = ['table_number', 'name', 'description', 'price', 'status']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['items'].widget = forms.CheckboxSelectMultiple()
-        self.fields['items'].queryset = Item.objects.all()
-
-class StatusChangeForm(forms.Form):
-    status = forms.ChoiceField(choices=Order.STATUS_CHOICES)
-
-class AddItemForm(forms.ModelForm):
-    class Meta:
-        model = OrderItem
-        fields = ['item', 'quantity']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['item'].queryset = Item.objects.all()
 
 class SignUpForm(UserCreationForm):
     """
@@ -41,3 +25,57 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'password1', 'password2',)
 
 
+# from django import forms
+# from .models import Item, Order, OrderItem
+#
+#
+# class ItemForm(forms.ModelForm):
+#     class Meta:
+#         model = Item
+#         fields = ['name', 'description', 'price']
+#
+#
+# class OrderForm(forms.ModelForm):
+#     class Meta:
+#         model = Order
+#         fields = ['table_number', 'status']
+#
+#
+# class OrderItemForm(forms.ModelForm):
+#     class Meta:
+#         model = OrderItem
+#         fields = ['item', 'quantity']
+#
+#
+# # Форма для добавления новых товаров в заказ
+# class AddToOrderForm(forms.Form):
+#     item_id = forms.IntegerField(widget=forms.HiddenInput())
+#     quantity = forms.IntegerField(min_value=1, widget=forms.HiddenInput())
+#
+#
+# def create_order_form(request):
+#     if request.method == 'POST':
+#         form = AddToOrderForm(request.POST)
+#         if form.is_valid():
+#             item_id = form.cleaned_data['item_id']
+#             quantity = form.cleaned_data['quantity']
+#
+#             # Получаем товар по ID
+#             item = Item.objects.get(id=item_id)
+#
+#             # Создаем новую запись OrderItem
+#             OrderItem.objects.create(
+#                 order=request.user.current_order,
+#                 item=item,
+#                 quantity=quantity
+#             )
+#
+#             # Обновляем общую сумму заказа
+#             request.user.current_order.update_total()
+#
+#             # Обновляем страницу без перезагрузки
+#             return HttpResponse(status=200)
+#     else:
+#         form = AddToOrderForm()
+#
+#     return render(request, 'add_item_to_order.html', {'form': form})

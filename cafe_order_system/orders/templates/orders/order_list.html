@@ -4,7 +4,16 @@
 {% block content %}
 <html lang="en">
 <body>
-    <h2>Список заказов</h2>
+    {% for order in orders %}
+    <h2>Номер заказа: {{ order.id }}</h2>
+    <a>Номер стола: {{ order.table_number }} </a>
+    <li>Статус заказа: {{ order.status }} </li>
+    <li>Описание заказа: {{ order.description }} </li>
+    <li>Стоимость заказа: {{ order.price }} </li>
+
+    {% endfor %}
+
+    <h3>Общая стоимость заказов: {{ total_price_list }} руб</h3>
 </body>
 </html>
 {% endblock %}
