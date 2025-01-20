@@ -42,13 +42,50 @@ def home(request):
 @login_required
 def create_order(request):
     if request.method == "POST":
+
         form = OrderForm(request.POST)
+
         if form.is_valid():
             order = form.save()
+
+
+            parts = form.description.split('\n')
+            dictionaries = []
+            for part in parts:
+                dictionaries.append(part.split('-'))
+            print(dictionaries)
+
+
+            # for i in order.description:
+            #     print(i)
             return redirect('order_detail', order.id)
     else:
         form = OrderForm()
     return render(request, 'orders/order_form.html', {'form': form})
+
+
+
+# def string_to_nested_dict(text):
+#     parts = text.split('\n')
+#     dictionaries = []
+#     for part in parts:
+#         if ';' in part:
+#             inner_dict = dict(pair.split('=') for pair in part.split(';'))
+#             dictionaries.append(inner_dict)
+#         else:
+#             dictionaries.append({part.split('=')[0]: part.split('=')[1]})
+#
+#     return {i: inner_dict for i, inner_dict in enumerate(dictionaries)}
+#
+#
+# # Пример использования
+# text = "key1=value1;key2=value2\nkeyA=valueA\nkeyB=valueB"
+# result = string_to_nested_dict(text)
+# print(result)
+
+
+
+
 
 # @login_required
 # def update_order(request, order_id):
@@ -86,15 +123,22 @@ def delete_order(request, order_id):
     return render(request, 'orders/delete_order_form.html', {'order': order})
 
 @login_required
-def search_orders(request, description_list = [], price_list = []):
+def search_orders(request, description_list = []):
     orders = Order.objects.all()
     # global description_list
     # global price_list
     price_list = []
+
+
     for order in orders:
+        # for i in order.description:
+        #     print(i)
         description_list.append(order.description)
         price_list.append(order.price)
-    total_price_list = sum(price_list)
+    try:
+        total_price_list = sum(price_list)
+    except:
+        total_price_list = "не корректно введена цена"
         # print(price_list)
     # description_list = []
 

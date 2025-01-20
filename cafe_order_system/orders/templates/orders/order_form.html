@@ -4,10 +4,24 @@
 {% block content %}
 <h2>Создание заказа</h2>
 <form method="post">
-    {{ form.items.label }}: {{ form.items.name }}
+    {{ form.order.label }}: {{ form.order.name }}
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Создать заказ</button>
 
+    <div class="form-group">
+        {{ form.table_number.label }}: {{ form.table_number }}
+    </div><h2></h2>
+    <div class="form-group">
+        {{ form.status.label }}: {{ form.status }}
+    </div><h2></h2>
+    <div class="form-group">
+        {{ form.name.label }}: {{ form.name }}
+    </div><h2></h2>
+
+    <div class="form-group">
+        {{ form.description.label }}: {{ form.description }}
+    </div><h2></h2>
+
+    <button type="submit">Создать заказ</button>
 </form>
+
 {% endblock %}
