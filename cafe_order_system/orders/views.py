@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -41,19 +42,25 @@ def home(request):
 
 @login_required
 def create_order(request):
+    # orders = Order.objects.get(user=User)
+    # parts = orders.description.split('\n')
+    # dictionaries = []
+    # for part in parts:
+    #     dictionaries.append(part.split('-'))
+    # print(dictionaries)
     if request.method == "POST":
+
+
 
         form = OrderForm(request.POST)
 
         if form.is_valid():
+            # print(form)
             order = form.save()
+        # print(order)
 
 
-            parts = form.description.split('\n')
-            dictionaries = []
-            for part in parts:
-                dictionaries.append(part.split('-'))
-            print(dictionaries)
+
 
 
             # for i in order.description:
@@ -62,6 +69,7 @@ def create_order(request):
     else:
         form = OrderForm()
     return render(request, 'orders/order_form.html', {'form': form})
+    # if request.method == "POST":
 
 
 
@@ -87,18 +95,62 @@ def create_order(request):
 
 
 
-# @login_required
-# def update_order(request, order_id):
-#     order = get_object_or_404(Order, id=order_id)
-#     if request.method == "POST":
-#         form = StatusChangeForm(request.POST)
-#         if form.is_valid():
-#             order.status = form.cleaned_data['status']
-#             order.save()
-#             return redirect('order_list')
-#     else:
-#         form = StatusChangeForm(initial={'status': order.status})
-#     return render(request, 'orders/status_change_form.html', {'form': form, 'order_id': order.id})
+@login_required
+def order_editing(request, pk):
+    order = Order.objects.get(pk=pk)
+    if request.method == "POST":
+        form = OrderForm(request.POST, request.FILES, instance=order)
+        if form.is_valid():
+            order.name = request.user
+            form.save()
+
+            return redirect('orders:editing_order', pk=pk)
+    else:
+        # вызов функции которая отобразит в браузере указанный шаблон с данными формы и объявления.
+        form = OrderForm(instance=order)
+    return render(request, 'orders/editing_order.html',
+                  {'form': form, 'order': order})
+
+
+
+
+    # order = get_object_or_404(Order, id=order_id)
+    # if request.method == "POST":
+    #     form = StatusChangeForm(request.POST)
+    #     if form.is_valid():
+    #         order.status = form.cleaned_data['status']
+    #         order.save()
+    #         return redirect('order_list')
+    # else:
+    #     form = StatusChangeForm(initial={'status': order.status})
+    # return render(request, 'orders/status_change_form.html', {'form': form, 'order_id': order.id})
+
+# @login_required    # Проверяет регистрацию пользователя
+# def edit_advertisement(request, pk):
+
+#     advertisement = Advertisement.objects.get(pk=pk)
+#     if advertisement.status != 'товар передан в доставку' and advertisement.status != 'товар доставлен':
+#         if request.method == "POST":
+#             form = AdvertisementForm(request.POST, request.FILES, instance=advertisement)
+#
+#             if form.is_valid():
+#                 advertisement.name = request.user
+#
+#                 advertisement.status = 'заявка создана'
+#                 form.save()
+#                 img_obj = form.instance
+#                 # Перенаправляет на страницу с сохраненными исправлениями.
+#                 return redirect('board:advertisement_detail', pk=img_obj.pk)
+#         else:
+#             # вызов функции которая отобразит в браузере указанный шаблон с данными формы и объявления.
+#             form = AdvertisementForm(instance=advertisement)
+#         return render(request, 'board/edit_advertisement.html',
+#                       {'form': form, 'advertisement': advertisement})
+#     return redirect('board:advertisement_detail', pk=pk)
+
+
+
+
 
 # @login_required
 # def add_item_to_order(request, order_id):
@@ -123,7 +175,7 @@ def delete_order(request, order_id):
     return render(request, 'orders/delete_order_form.html', {'order': order})
 
 @login_required
-def search_orders(request, description_list = []):
+def search_orders(request, description_list=[]):
     orders = Order.objects.all()
     # global description_list
     # global price_list
