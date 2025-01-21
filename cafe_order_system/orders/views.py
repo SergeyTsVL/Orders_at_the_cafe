@@ -42,29 +42,13 @@ def home(request):
 
 @login_required
 def create_order(request):
-    # orders = Order.objects.get(user=User)
-    # parts = orders.description.split('\n')
-    # dictionaries = []
-    # for part in parts:
-    #     dictionaries.append(part.split('-'))
-    # print(dictionaries)
+
     if request.method == "POST":
-
-
-
         form = OrderForm(request.POST)
 
         if form.is_valid():
-            # print(form)
             order = form.save()
-        # print(order)
 
-
-
-
-
-            # for i in order.description:
-            #     print(i)
             return redirect('order_detail', order.id)
     else:
         form = OrderForm()
@@ -95,21 +79,21 @@ def create_order(request):
 
 
 
-@login_required
-def order_editing(request, pk):
-    order = Order.objects.get(pk=pk)
-    if request.method == "POST":
-        form = OrderForm(request.POST, request.FILES, instance=order)
-        if form.is_valid():
-            order.name = request.user
-            form.save()
-
-            return redirect('orders:editing_order', pk=pk)
-    else:
-        # вызов функции которая отобразит в браузере указанный шаблон с данными формы и объявления.
-        form = OrderForm(instance=order)
-    return render(request, 'orders/editing_order.html',
-                  {'form': form, 'order': order})
+# @login_required
+# def order_editing(request, pk):
+#     order = Order.objects.get(pk=pk)
+#     if request.method == "POST":
+#         form = OrderForm(request.POST, request.FILES, instance=order)
+#         if form.is_valid():
+#             order.name = request.user
+#             form.save()
+#
+#             return redirect('orders:editing_order', pk=pk)
+#     else:
+#         # вызов функции которая отобразит в браузере указанный шаблон с данными формы и объявления.
+#         form = OrderForm(instance=order)
+#     return render(request, 'orders/editing_order.html',
+#                   {'form': form, 'order': order})
 
 
 
@@ -175,38 +159,36 @@ def delete_order(request, order_id):
     return render(request, 'orders/delete_order_form.html', {'order': order})
 
 @login_required
-def search_orders(request, description_list=[]):
+def search_orders(request, description_list=[], price = 0):
     orders = Order.objects.all()
-    # global description_list
-    # global price_list
     price_list = []
 
 
     for order in orders:
-        # for i in order.description:
-        #     print(i)
-        description_list.append(order.description)
+        parts = order.description.split('\n')
+        dictionaries = []
+        for part in parts:
+            dictionaries.append(part.split('-'))
+        try:
+            for i in dictionaries:
+                cleaned_list = [item.replace('\r', '') for item in i]
+                price += int(cleaned_list[1]) * int(cleaned_list[2])
+        except:
+            price = None
+        order.price = price
         price_list.append(order.price)
+        price = 0
     try:
         total_price_list = sum(price_list)
     except:
         total_price_list = "не корректно введена цена"
-        # print(price_list)
-    # description_list = []
 
-        # order.description
-        # order.price = list(order.price)
-    # search_query = request.GET.get('q', '')description_list = []
-    # price_list = []
-    # if search_query:
-    #     orders = orders.filter(
-    #         Q(table_number__icontains=search_query) |
-    #         Q(status__icontains=search_query)
-    #     )
     return render(request, 'orders/order_list.html', {'orders': orders, 'price_list': price_list,
-                                                      'total_price_list': total_price_list})
+                                                      'total_price_list': total_price_list, 'price': price})
 
 @login_required
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'orders/order_detail.html', {'order': order})
+
+
