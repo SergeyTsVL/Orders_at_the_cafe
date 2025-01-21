@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.db.models import Q
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Order
@@ -9,9 +9,6 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from django.contrib.auth import login, authenticate, logout
 
-
-# description_list = []
-# price_list = []
 
 def logout_view(request):
     """
@@ -42,13 +39,11 @@ def home(request):
 
 @login_required
 def create_order(request):
-
     if request.method == "POST":
         form = OrderForm(request.POST)
-
-        if form.is_valid():
+        if (form.is_valid() and form['table_number'].value() != '' and form['description'].value() != ''
+                and form['name'].value() != ''):
             order = form.save()
-
             return redirect('order_detail', order.id)
     else:
         form = OrderForm()
@@ -155,15 +150,24 @@ def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     if request.method == "POST":
         order.delete()
-        return redirect('order_list')
+        return redirect('/search')
     return render(request, 'orders/delete_order_form.html', {'order': order})
 
+    # advertisement = Advertisement.objects.get(pk=pk)
+    # if advertisement.status != 'товар передан в доставку' and advertisement.status != 'товар доставлен':
+    #     if request.method == "POST":
+    #         advertisement.delete()
+    #         return redirect('board:advertisement_list')
+    #     else:
+    #         None
+    #     return render(request, 'board/delete_advertisement.html', {'advertisement': advertisement})
+    # else:
+    #     return redirect('board:advertisement_list')
+
 @login_required
-def search_orders(request, description_list=[], price = 0):
+def search_orders(request, price=0):
     orders = Order.objects.all()
     price_list = []
-
-
     for order in orders:
         parts = order.description.split('\n')
         dictionaries = []
