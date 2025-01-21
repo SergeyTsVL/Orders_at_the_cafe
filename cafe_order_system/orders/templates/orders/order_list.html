@@ -5,12 +5,13 @@
 <html lang="en">
 <body>
     {% for order in orders %}
-    <h2><a href="{% url 'delete_order' order.id %}" >Номер заказа: {{ order.id }}</a> </h2>
+    <h2><a href="{% url 'editing_order' order.pk %}" >Номер заказа: {{ order.id }}</a> </h2>
     <h3>Пользователь: {{ order.name }}</h3>
     <a>Номер стола: {{ order.table_number }}</a>
     <li>Статус заказа: {{ order.status }}</li>
     <li>Описание заказа: {{ order.description }}</li>
     <li>Стоимость заказа: {{ order.price }}</li>
+    <a href="{% url 'delete_order' order.id %}" >Удалить этот заказ </a>
     {% endfor %}
 
     <h3>Общая стоимость заказов: {{ total_price_list }} руб</h3>

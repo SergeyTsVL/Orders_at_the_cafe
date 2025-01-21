@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>editing_order  editing_order   editing_order  editing_order</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+<h1>Редактирование заказа</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Сохранить изменения">
+</form>
+
+
+
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="order_id" value="{{ order.id }}">
+    <button type="submit">Удалить заказ</button>
+</form>
+
+
+
+{% endblock content %}

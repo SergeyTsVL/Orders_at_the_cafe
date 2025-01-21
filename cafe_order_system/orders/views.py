@@ -74,21 +74,21 @@ def create_order(request):
 
 
 
-# @login_required
-# def order_editing(request, pk):
-#     order = Order.objects.get(pk=pk)
-#     if request.method == "POST":
-#         form = OrderForm(request.POST, request.FILES, instance=order)
-#         if form.is_valid():
-#             order.name = request.user
-#             form.save()
-#
-#             return redirect('orders:editing_order', pk=pk)
-#     else:
-#         # вызов функции которая отобразит в браузере указанный шаблон с данными формы и объявления.
-#         form = OrderForm(instance=order)
-#     return render(request, 'orders/editing_order.html',
-#                   {'form': form, 'order': order})
+@login_required
+def order_editing(request, pk):
+    order = Order.objects.get(pk=pk)
+    if request.method == "POST":
+        form = OrderForm(request.POST, request.FILES, instance=order)
+        if form.is_valid():
+            order.name = request.user
+            form.save()
+
+            return redirect('/search')
+    else:
+        # вызов функции которая отобразит в браузере указанный шаблон с данными формы и объявления.
+        form = OrderForm(instance=order)
+    return render(request, 'orders/editing_order.html',
+                  {'form': form, 'order': order})
 
 
 
