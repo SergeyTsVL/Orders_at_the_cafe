@@ -3,18 +3,26 @@
 
 {% block content %}
 <html lang="en">
+
+<div id="modelSearchString">
+    ID модели: {{ orders.id }}
+</div>
+
 <body>
+
     {% for order in orders %}
-    <h2><a href="{% url 'editing_order' order.pk %}" >Номер заказа: {{ order.id }}</a> </h2>
+    <h2><a >Номер заказа: {{ order.id }}</a> </h2>
     <h3>Пользователь: {{ order.name }}</h3>
     <a>Номер стола: {{ order.table_number }}</a>
     <li>Статус заказа: {{ order.status }}</li>
     <li>Описание заказа: {{ order.description }}</li>
     <li>Стоимость заказа: {{ order.price }}</li>
-    <a href="{% url 'delete_order' order.id %}" >Удалить этот заказ </a>
+    <a href="{% url 'editing_order' order.pk %}"  ><button type="submit" >Редактировать</button></a><a>  </a>
+    <a href="{% url 'delete_order' order.id %}"><button type="submit" >Удалить</button></a>
     {% endfor %}
 
     <h3>Общая стоимость заказов: {{ total_price_list }} руб</h3>
+    <h3>Общая выручка: {{ REVENUE }} руб</h3>
 </body>
 </html>
 {% endblock %}
