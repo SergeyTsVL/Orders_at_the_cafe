@@ -29,6 +29,7 @@
 
         {% if user.is_authenticated %}
             <a href="{% url 'search_orders' %}">Поиск заказов</a>
+            <a href="{% url 'search_orders' %}">Список заказов</a>
             <a href="{% url 'create_order' %}">Создание заказа</a>
             <a href="{% url 'logout' %}">Выход из системы</a>
         {% else %}

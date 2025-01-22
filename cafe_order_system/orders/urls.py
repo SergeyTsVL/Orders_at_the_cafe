@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import create_order, delete_order, search_orders, order_detail, home, \
-    logout_view, signup, order_editing
+    logout_view, signup, order_editing, post_search
 
 # app_name = 'orders'
 
@@ -18,4 +18,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('signup/', signup, name='signup'),
     # path('', include('orders.urls')),
+    path('search/', post_search, name='post_search'),
 ]

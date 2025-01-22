@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
+
 from .models import Order
 from .forms import OrderForm
 
@@ -139,5 +141,22 @@ def search_orders(request, price=0, revenue_1=0):
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'orders/order_detail.html', {'order': order})
+
+
+
+
+from django.contrib.postgres.search import SearchVector
+from .forms import SearchForm
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Order.objects.annotate(search=SearchVector('title', 'body'),).filter(search=query)
+    return render(request, 'orders/search_id.html', {'form': form, 'query': query, 'results': results})
 
 
