@@ -4,12 +4,7 @@
 {% block content %}
 <html lang="en">
 
-<div id="modelSearchString">
-    ID модели: {{ orders.id }}
-</div>
-
 <body>
-
     {% for order in orders %}
     <h2><a >Номер заказа: {{ order.id }}</a> </h2>
     <h3>Пользователь: {{ order.name }}</h3>
@@ -20,9 +15,9 @@
     <a href="{% url 'editing_order' order.pk %}"  ><button type="submit" >Редактировать</button></a><a>  </a>
     <a href="{% url 'delete_order' order.id %}"><button type="submit" >Удалить</button></a>
     {% endfor %}
-
+</body>
     <h3>Общая стоимость заказов: {{ total_price_list }} руб</h3>
     <h3>Общая выручка: {{ REVENUE }} руб</h3>
-</body>
+
 </html>
 {% endblock %}

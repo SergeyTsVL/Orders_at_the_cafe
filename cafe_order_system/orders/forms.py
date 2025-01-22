@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
 from .models import Order
 
 
@@ -9,7 +8,6 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['table_number', 'name', 'description', 'status']
-
 
 class SignUpForm(UserCreationForm):
     """

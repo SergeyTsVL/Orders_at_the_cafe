@@ -5,9 +5,8 @@
 
 <html lang="en">
 <body>
-    <h1>Зака успешно добавлен. Найдите его в "Поиск заказов"</h1>
+    <h1>Ваш заказ номер {{ order.id }} </h1>
     <h2>Заказчик: {{ order.name }}</h2>
-    <h2>Номер заказа: {{ order.id }}</h2>
     <a>Номер стола: {{ order.table_number }} </a>
     <li>Статус заказа: {{ order.status }} </li>
     <li>Описание заказа: {{ order.description }} </li>

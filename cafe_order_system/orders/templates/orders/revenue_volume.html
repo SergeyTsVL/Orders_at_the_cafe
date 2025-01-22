@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<html lang="en">
+<body>
+    <h1>Все заказы со статусом оплачено которые не удалены</h1>
+    {% for order in orders %}
+    <li>Стол: {{ order.table_number }}</li>
+    <a>Описание заказа: {{ order.description }}</a>
+    {% endfor %}
+    <h2>Общая выручка: {{ REVENUE }} руб</h2>
+</body>
+</html>
+{% endblock %}
