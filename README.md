@@ -11,4 +11,4 @@ python cafe_order_system/manage.py migrate
 python cafe_order_system/manage.py runserver
 python manage.py createsuperuser
 
-![Uploading 1.png…](https://github.com/SergeyTsVL/TZ_vacancy/blob/main/images/1.png)
+![Uploading 1.png…](https://github.com/SergeyTsVL/Orders_at_the_cafe/blob/3/image/1.png)
