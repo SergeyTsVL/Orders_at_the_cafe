@@ -9,6 +9,7 @@ python manage.py makemigrations
 python manage.py migrate
 # Запускаем DjangoProject
 python manage.py runserver
+# Регистрируемся как администратор
 python manage.py createsuperuser
 
 # Так выглядит начальная страница проекта
